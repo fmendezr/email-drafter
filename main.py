@@ -1,3 +1,4 @@
+from gui import Gui
+
 if __name__ == "__main__":
-    #main function
-    print("Hello World")
+    gui = Gui()

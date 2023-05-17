@@ -79,6 +79,3 @@ class Gui():
         self.draft.delete("1.0", tk.END)  # Delete existing text
         self.draft.insert(tk.END, draft_response)  # Insert new text
         
-
-
-gui = Gui()

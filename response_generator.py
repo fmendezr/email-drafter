@@ -15,6 +15,26 @@ def get_completion(prompt, model="gpt-3.5-turbo"):
     )
     return response.choices[0].message["content"]
 
-prompt = "how to be rich?"
+def generate_prompt(subject, sender_name, recipient_name, tone, goal, bg_info, im_info, length, language="english"):
+    prompt = f"""
+    Generate an email in {language} meeting the criteria enclosed in the parenthesis below and seperated by comas: \
+    (
+        subject of email: {subject},
+        addressed to: {recipient_name}
+        signed by: {sender_name}
+        tone of email: {tone},
+        goal: {goal},
+        background_info: {bg_info},
+        important info that must be included: {im_info}, 
+        target length of body of email: {length}
+    )
+    Remember to take your time to generate a response. Once so review if ti meats all the criterias inside the parenthesis. If so \
+    deliver the response. If it does not match the critera take your time creating a more appropiate response. Do not be repetitive
+    """
+    return prompt
 
-print(get_completion(prompt))
+def get_response(subject, sender_name, recipient_name, tone, goal, bg_info, im_info, length, language="english"):
+    return get_completion(generate_prompt(subject, sender_name, recipient_name, tone, goal, bg_info, im_info, length, language))
+
+x1 = get_response("Applying position of Peer Mentor", "Felix Mendez", "Dr. Goodwin", "formal", "to inform professro in charge of hiring peer mentors that I am interested in position", "", "Completed application is atached to this email", "concise", "english")
+print(x1)

@@ -1,45 +1,12 @@
 import tkinter as tk
+from response_generator import get_response
 
-'''
- Hey chat gpt I need u to devlop a gui using tkinter. the window should be titled Email Helper. add seperate input fields and labels
- for the following things (initiated by -):
- - users email address 
- - the password to that 
- - the email address of the recipient 
- - the subject of the email
- - how to address the recipient 
- - what name should  sign the email 
- - tone of the email
- - goal (request, inform, send documents, etc)
- - background information if necessary   
- - important things that should be included in the email
- - approximate length (words)
- Additionally there should be a button with the text content "generate response" that when clicked calls a function called 
- generate_message with the contents of each of the inputs fields as seperate input parameters. 
- You should style everything approapiatley for it to look profesional, sleek, and elegant.   
-'''
-
-'''
- Chatgpt I need u to compose an email with addressing  {recipient},it shuold be signed by {user}.
- Follow the guidlines inside the parethensis for instructions on how to write this email.
-    (
-        subject: {subject}
-        tone: {tone}
-        goal: {goal}:  
-        background information: {background_info}
-        important things that must be included: {import_info}
-        approximate length of body: {length}
-    )   
-'''
 class Gui():
     def __init__(self) -> None:
         self.root = tk.Tk()
         self.root.title("Email Helper")
 
         # Labels
-        self.email_label = tk.Label(self.root, text="User's Email Address:")
-        self.password_label = tk.Label(self.root, text="Password:")
-        self.recipient_email_label = tk.Label(self.root, text="Recipient's Email Address:")
         self.subject_label = tk.Label(self.root, text="Subject:")
         self.recipient_address_label = tk.Label(self.root, text="How to Address the Recipient:")
         self.sender_name_label = tk.Label(self.root, text="Sender's Name:")
@@ -47,28 +14,25 @@ class Gui():
         self.goal_label = tk.Label(self.root, text="Goal:")
         self.background_label = tk.Label(self.root, text="Background Information:")
         self.important_label = tk.Label(self.root, text="Important Points:")
-        self.length_label = tk.Label(self.root, text="Approximate Length (words):")
+        self.length_label = tk.Label(self.root, text="Approximate Length:")
+        self.language_label = tk.Label(self.root, text="Language of response (english):")
     
         # Entry fields
-        self.email_entry = tk.Entry(self.root)
-        self.password_entry = tk.Entry(self.root, show="*")
-        self.recipient_email_entry = tk.Entry(self.root)
-        self.subject_entry = tk.Entry(self.root)
-        self.recipient_address_entry = tk.Entry(self.root)
-        self.sender_name_entry = tk.Entry(self.root)
-        self.tone_entry = tk.Entry(self.root)
-        self.goal_entry = tk.Entry(self.root)
-        self.background_entry = tk.Entry(self.root)
-        self.important_entry = tk.Entry(self.root)
-        self.length_entry = tk.Entry(self.root)
+        self.subject_entry = tk.Entry(self.root, width=60)
+        self.recipient_address_entry = tk.Entry(self.root, width=60)
+        self.sender_name_entry = tk.Entry(self.root, width=60)
+        self.tone_entry = tk.Entry(self.root, width=60)
+        self.goal_entry = tk.Entry(self.root, width=60)
+        self.background_entry = tk.Text(self.root, height=15)
+        self.important_entry = tk.Text(self.root, height=15)
+        self.length_entry = tk.Entry(self.root, width=60)
+        self.language_entry = tk.Entry(self.root, width=60)
+        self.draft = tk.Text(self.root, height=6, width=100)
        
         # Button
         self.generate_button = tk.Button(self.root, text="Generate Response", command=self.on_generate)
       
         # Grid layout
-        self.email_label.grid(row=0, column=0, sticky="e")
-        self.password_label.grid(row=1, column=0, sticky="e")
-        self.recipient_email_label.grid(row=2, column=0, sticky="e")
         self.subject_label.grid(row=3, column=0, sticky="e")
         self.recipient_address_label.grid(row=4, column=0, sticky="e")
         self.sender_name_label.grid(row=5, column=0, sticky="e")
@@ -77,10 +41,8 @@ class Gui():
         self.background_label.grid(row=8, column=0, sticky="e")
         self.important_label.grid(row=9, column=0, sticky="e")
         self.length_label.grid(row=10, column=0, sticky="e")
+        self.language_label.grid(row=11, column=0, sticky="e")
 
-        self.email_entry.grid(row=0, column=1)
-        self.password_entry.grid(row=1, column=1)
-        self.recipient_email_entry.grid(row=2, column=1)
         self.subject_entry.grid(row=3, column=1)
         self.recipient_address_entry.grid(row=4, column=1)
         self.sender_name_entry.grid(row=5, column=1)
@@ -89,25 +51,33 @@ class Gui():
         self.background_entry.grid(row=8, column=1)
         self.important_entry.grid(row=9, column=1)
         self.length_entry.grid(row=10, column=1)
+        self.language_entry.grid(row=11, column=1)
 
-        self.generate_button.grid(row=11)
+        self.generate_button.grid(row=12, columnspan=2)
+
+        self.draft.grid(row=13, column=0, columnspan=2)
 
         # initiate main loop
         self.root.mainloop()
 
+    # execute when button is clicked
     def on_generate(self):
-    # Function to handle the "Generate Response" button click
-        email_address = self.email_entry.get()
-        password = self.password_entry.get()
-        recipient_email = self.recipient_email_entry.get()
         subject = self.subject_entry.get()
         recipient_address = self.recipient_address_entry.get()
         sender_name = self.sender_name_entry.get()
         tone = self.tone_entry.get()
         goal = self.goal_entry.get()
-        background = self.background_entry.get()
-        important = self.important_entry.get()
-        length = self.length_entry.get()   
+        background = self.background_entry.get("1.0", tk.END)
+        important = self.important_entry.get("1.0", tk.END)
+        length = self.length_entry.get()
+        language = self.language_entry.get()
+        draft_response = get_response(subject, sender_name, recipient_address, tone, goal, background, important, length, language)
+        self.show_draft(draft_response)
+
+    # handle inserting the resposne from the model into the text box
+    def show_draft(self, draft_response):  
+        self.draft.delete("1.0", tk.END)  # Delete existing text
+        self.draft.insert(tk.END, draft_response)  # Insert new text
         
 
 

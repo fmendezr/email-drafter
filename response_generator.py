@@ -35,6 +35,3 @@ def generate_prompt(subject, sender_name, recipient_name, tone, goal, bg_info, i
 
 def get_response(subject, sender_name, recipient_name, tone, goal, bg_info, im_info, length, language="english"):
     return get_completion(generate_prompt(subject, sender_name, recipient_name, tone, goal, bg_info, im_info, length, language))
-
-x1 = get_response("Applying position of Peer Mentor", "Felix Mendez", "Dr. Goodwin", "formal", "to inform professro in charge of hiring peer mentors that I am interested in position", "", "Completed application is atached to this email", "concise", "english")
-print(x1)

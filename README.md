@@ -26,9 +26,7 @@ The purpose of this program is to simplify the process of drafting emails by pro
 
     cd email-helper
 
-3. Install the required dependencies:
-
-    pip install -r requirements.txt
+3. Install the required dependencies (consult requirements)
 
 4. Obtain an API key from the ChatGPT API provider.
 
@@ -51,4 +49,4 @@ The purpose of this program is to simplify the process of drafting emails by pro
 
 4. Copy the generated draft and use it as a basis for composing your email.
 
-5. Please note that the "sender.py" file for directly sending emails from the interface is inactive due to Google's deactivation of third-party app access to Gmail accounts. You may need to manually copy the generated draft to your email client or make use of another email-sending solution.
+Please note that the "sender.py" file for directly sending emails from the interface is inactive due to Google's deactivation of third-party app access to Gmail accounts. You may need to manually copy the generated draft to your email client or make use of another email-sending solution.
